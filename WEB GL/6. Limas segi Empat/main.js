@@ -43,13 +43,13 @@ function main(){
     gl.vertexAttribPointer(aColor, 3, gl.FLOAT, false, 5*Float32Array.BYTES_PER_ELEMENT, 2*Float32Array.BYTES_PER_ELEMENT);
     gl.enableVertexAttribArray(aColor);
     var x = 0.0, y = 0.0, z = 0.0;
-    var angle = 90;
 
     function render(time){
-        if (!freeze){
-            angle += 0.1;
+        if(!freeze){
+            x = x + 0.001;
         }
-        rotateZ(gl, program, angle);
+
+        translation(x, y, z, gl, program);
 
         gl.clearColor(1.0, 1.0, 1.0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);

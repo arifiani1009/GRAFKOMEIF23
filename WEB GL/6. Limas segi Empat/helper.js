@@ -34,18 +34,3 @@ function shear(gl, program){
     gl.uniformMatrix4fv(shear, false, shearMat);
 }
 
-function rotateZ(gl, program, angle){
-    var ca = Math.cos(angle);
-    var sa = Math.sin(angle);
-
-    var matriksRotasi = new Float32Array([
-        ca, -sa, 0.0, 0.0,
-        sa, ca, 0.0, 0.0,
-        0.0, 0.0, 1.0, 0.0,
-        0.0, 0.0, 0.0, 1.0
-        ]);
-    
-    var shear = gl.getUniformLocation(program, "uMatrix");
-    gl.uniformMatrix4fv(shear, false, matriksRotasi);
-}
-
