@@ -57,7 +57,7 @@ function main(){
     var Mmatrix = gl.getUniformLocation(program, "uModel");
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     
-    var projmatrix = getprojection(30, canvas.width/canvas.height, 1, 100);
+    var projmatrix = getprojection(45, canvas.width/canvas.height, 1, 100);
     var modmatrix = [
         1,0,0,0,
         0,1,0,0,
