@@ -5,7 +5,7 @@ function main(){
     //vertex buffer
     var vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangles), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
     
     //color buffer
     var colorBuffer = gl.createBuffer();
@@ -57,28 +57,27 @@ function main(){
     var Mmatrix = gl.getUniformLocation(program, "uModel");
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     
-    var projmatrix = getprojection(45, canvas.width/canvas.height, 1, 100);
-    var modmatrix = [
-        1,0,0,0,
-        0,1,0,0,
-        0,0,1,0,
-        0,0,0,1];
-    var viewmatrix = [
-        1,0,0,0,
-        0,1,0,0,
-        0,0,1,0,
-        0,0,0,1];
+    var projmatrix = glMatrix.mat4.create();
+    var modmatrix = glMatrix.mat4.create();
+    var viewmatrix = glMatrix.mat4.create();
 
-    viewmatrix[14] = viewmatrix[14]-3;
-    viewmatrix[13] = viewmatrix[13];
-    viewmatrix[12] = viewmatrix[12];
+    glMatrix.mat4.perspective(projmatrix, //matriks proyeksi
+        glMatrix.glMatrix.toRadian(90), //sudutnya
+        1.0, //aspect ratio
+        0.5, //near
+        10.0 //far
+        );
 
-    translasi(modmatrix, 0.5, 0.7, 0.0);    
+    glMatrix.mat4.lookAt(viewmatrix,//matriks view
+        [0.0, 0.0, 2.0],//posisi kamera (posisi)
+        [0.0, 0.0, -2.0],//arah kamera menghadap (vektor)
+        [0.0, 1.0, 0.0]//arah atas kamera (vektor)
+        );
+
+    var theta = glMatrix.glMatrix.toRadian(1);//sudutnya adalah 1 derajat   
     var animate = function(){
         if(!freeze){
-            rotasi(modmatrix, 0.02);
-            //skalasi(modmatrix);
-            //translasi(modmatrix, 0.001, 0.0, 0.0);
+            glMatrix.mat4.rotate(modmatrix, modmatrix, theta, [1.0,1.0,1.0]);
         }
         
         gl.enable(gl.DEPTH_TEST);
