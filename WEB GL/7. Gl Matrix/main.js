@@ -51,6 +51,12 @@ function main(){
     var aColor = gl.getAttribLocation(program, "aColor");
     gl.vertexAttribPointer(aColor, 3, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(aColor);
+
+    //ambient light
+    var uAmbientColor = gl.getUniformLocation(program, "uAmbientColor");
+    var uAmbientIntensity = gl.getUniformLocation(program, "uAmbientIntensity");
+    gl.uniform3fv(uAmbientColor, [1.0, 1.0, 1.0]);
+    gl.uniform1f(uAmbientIntensity, 0.9);
     
     var Pmatrix = gl.getUniformLocation(program, "uProj");
     var Vmatrix = gl.getUniformLocation(program, "uView");
