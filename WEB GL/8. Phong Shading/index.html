@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menggambar Primitif</title>
+</head>
+<body onload="main()">
+    <canvas id="myCanvas" style="border: 1px solid black;" width="650px" height="650px">
+    </canvas>
+    <script src="data.js"></script>
+    <script src="main.js"></script>
+    <script src="IOHandler.js"></script>
+    <script src="gl-matrix-min.js"></script>
+
+    <script id="vertexShaderCode" type="notjs">
+        attribute vec3 aPosition;
+        attribute vec3 aColor;
+        attribute vec3 aNormal;
+        varying vec3 vPosition;
+        varying vec3 vColor;
+        varying vec3 vNormal;
+        uniform mat4 uProjection;
+        uniform mat4 uView;
+        uniform mat4 uModel;
+        uniform mat3 uNormal;
+        void main() {
+            gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);
+            vPosition = (uModel * vec4(aPosition, 1.0)).xyz;
+            vColor = aColor;
+            vNormal = normalize(uNormal * aNormal);
+        }
+    </script>
+    <script id="fragmentShaderCode" type="notjs">
+        precision mediump float;
+        varying vec3 vPosition;
+        varying vec3 vColor;
+        varying vec3 vNormal;
+        uniform vec3 uAmbientColor;
+        uniform vec3 uDiffuseColor;
+        uniform vec3 uDiffusePosition;
+        void main() {
+            vec3 lightPos = uDiffusePosition;
+            vec3 vlight = normalize(lightPos - vPosition);
+            float dotNL = max(dot(vNormal, vlight), 0.0);
+            vec3 diffuse = vColor * uDiffuseColor * dotNL;
+            vec3 ambient = vColor * uAmbientColor;
+            gl_FragColor = vec4(ambient + diffuse, 1.0);
+        }
+    </script>
+    
+</body>
+</html>
